@@ -1,0 +1,21 @@
+pipeline {
+    agent any
+    stages {
+        stage("clean workspace"){
+            steps {
+                script {
+                    sh "rm -rf ./*"
+                }
+            }
+        }
+        stage("git clone"){
+            steps{
+                withCredentials([usernamePassword(credentialsId:'GITHUB_CREDENTIALS',usernameVariable:'GIT_USER',passwordVariable:'GIT_PASS')]){
+                    script {
+                        sh "git clone https://$GIT_USER:$GIT_PASS@github.com/cristianmorac/jenkins-practice.git"
+                    }
+                }
+            }
+        }
+    }
+}
